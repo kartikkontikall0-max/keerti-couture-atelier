@@ -13,6 +13,9 @@ const {
   sendPaymentStatusEmail,
   sendAppointmentStatusEmail,
   sendQuotationUpdateEmail,
+  sendWelcomeEmail,
+  sendOrderStatusUpdateEmail,
+  sendPasswordResetEmail,
 } = require('./mailer');
 
 let isProcessing = false;
@@ -147,6 +150,15 @@ const processOutboxEvents = async () => {
             break;
           case 'QUOTATION_ACCEPTED':
             result = await sendQuotationUpdateEmail(payload, 'accepted');
+            break;
+          case 'WELCOME_EMAIL':
+            result = await sendWelcomeEmail(payload);
+            break;
+          case 'ORDER_STATUS_UPDATE':
+            result = await sendOrderStatusUpdateEmail(payload, event.payload?.previousStatus);
+            break;
+          case 'PASSWORD_RESET':
+            result = await sendPasswordResetEmail(payload, event.payload?.resetToken);
             break;
           default:
             console.warn(`[Outbox] Unknown eventType: ${event.eventType}`);

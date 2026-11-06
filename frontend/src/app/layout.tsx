@@ -6,8 +6,37 @@ import { MessageCircle } from 'lucide-react';
 import { AuthProvider } from '@/context/AuthContext';
 
 export const metadata: Metadata = {
-  title: 'Keerti Couture | Luxury Bespoke Designer Blouse Atelier',
-  description: 'Exquisite bespoke designer blouse tailoring. Handcrafted embroidery, precision fit guarantee, and seamless digital customization.',
+  title: {
+    default: 'Keerti Couture | Luxury Bespoke Designer Blouse Atelier',
+    template: '%s | Keerti Couture',
+  },
+  description: 'Exquisite bespoke designer blouse tailoring. Handcrafted silk, heirloom bridal embroidery, precision 7-day fit guarantee, and digital atelier customization in Banhatti.',
+  keywords: ['designer blouse', 'bespoke tailoring', 'bridal blouse', 'kanjivaram silk', 'banarasi blouse', 'zardosi embroidery', 'Keerti Couture', 'Banhatti blouse atelier'],
+  authors: [{ name: 'Keerti Couture Atelier' }],
+  creator: 'Keerti Couture',
+  metadataBase: new URL('https://keerticouture.com'),
+  openGraph: {
+    type: 'website',
+    locale: 'en_IN',
+    url: 'https://keerticouture.com',
+    siteName: 'Keerti Couture Atelier',
+    title: 'Keerti Couture | Luxury Bespoke Designer Blouse Atelier',
+    description: 'Bespoke designer blouse tailoring and bridal couture atelier. Handwoven silk, precision fit guarantee, and custom embroidery.',
+    images: [
+      {
+        url: '/images/catalog/royal_zardosi_bridal.jpg',
+        width: 1200,
+        height: 800,
+        alt: 'Keerti Couture Atelier Bridal Blouse Collection',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Keerti Couture | Luxury Bespoke Designer Blouse Atelier',
+    description: 'Bespoke designer blouse tailoring and bridal couture atelier.',
+    images: ['/images/catalog/royal_zardosi_bridal.jpg'],
+  },
 };
 
 export default function RootLayout({

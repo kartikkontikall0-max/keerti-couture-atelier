@@ -7,6 +7,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const connectDB = require('./config/db');
+const validateEnv = require('./config/validateEnv');
 const { generalLimiter } = require('./middleware/rateLimiter');
 const csrfProtection = require('./middleware/csrfProtection');
 const { startOutboxWorker, stopOutboxWorker } = require('./utils/outboxProcessor');
@@ -81,8 +82,8 @@ app.use('/images/catalog', express.static(path.join(__dirname, '../frontend/publ
 app.use('/api', generalLimiter);
 app.use('/api', csrfProtection(allowedOrigins));
 
-// ── Health Probe Endpoint ────────────────────────────────────────────────────
-app.get('/api/health', (req, res) => {
+// ── Health & Readiness Probe Endpoints (Supports Root & /api) ────────────────
+const healthHandler = (req, res) => {
   const dbState = mongoose.connection.readyState;
   const isHealthy = dbState === 1;
   return res.status(isHealthy ? 200 : 503).json({
@@ -91,7 +92,12 @@ app.get('/api/health', (req, res) => {
     database: isHealthy ? 'connected' : 'disconnected',
     environment: process.env.NODE_ENV || 'development',
   });
-});
+};
+
+app.get('/health', healthHandler);
+app.get('/ready', healthHandler);
+app.get('/api/health', healthHandler);
+app.get('/api/ready', healthHandler);
 
 // ── Domain API Routes ────────────────────────────────────────────────────────
 app.use('/api/users', userRoutes);
@@ -138,6 +144,7 @@ const PORT = process.env.PORT || 5000;
 // ── Server Bootstrap: Guarantees DB is connected BEFORE accepting traffic ─────
 const startServer = async () => {
   try {
+    validateEnv();
     await connectDB();
 
     if (process.env.NODE_ENV !== 'production' && process.env.AUTO_SEED === 'true') {

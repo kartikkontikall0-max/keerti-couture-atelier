@@ -11,7 +11,10 @@
     "test:workflows": "node tests/phase4_workflow_tests.js",
     "test:phase5": "node tests/phase5_production_readiness_tests.js",
     "test:staging": "node tests/staging_readiness_test.js",
-    "test:all": "node tests/phase2_security_tests.js && node tests/phase4_workflow_tests.js && node tests/phase5_production_readiness_tests.js && node tests/staging_readiness_test.js",
+    "test:sec01": "node tests/sec01_remediation_test.js",
+    "test:cloudinary": "node tests/cloudinary_infrastructure_test.js",
+    "test:smtp": "node tests/smtp_infrastructure_test.js",
+    "test:all": "node tests/phase2_security_tests.js && node tests/phase4_workflow_tests.js && node tests/phase5_production_readiness_tests.js && node tests/staging_readiness_test.js && node tests/sec01_remediation_test.js && node tests/cloudinary_infrastructure_test.js && node tests/smtp_infrastructure_test.js",
     "seed:demo": "node seed_demo.js"
   },
   "keywords": [],

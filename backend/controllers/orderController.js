@@ -231,6 +231,7 @@ const updateOrderStatus = async (req, res) => {
       return res.status(404).json({ success: false, message: 'Order not found' });
     }
 
+    const previousStatus = order.status;
     if (req.body.status) {
       order.status = req.body.status;
     }
@@ -251,6 +252,24 @@ const updateOrderStatus = async (req, res) => {
     }
 
     const updatedOrder = await order.save();
+
+    // Trigger transactional outbox status notification if order status changed
+    if (req.body.status && req.body.status !== previousStatus) {
+      enqueueOutboxEvent(
+        'ORDER_STATUS_UPDATE',
+        order.email || (order.user && order.user.email),
+        {
+          orderId: order._id,
+          customerName: order.customerName,
+          status: req.body.status,
+          totalPrice: order.totalPrice,
+          previousStatus,
+        },
+        order._id
+      ).catch((err) => {
+        console.warn(`[Order] Outbox dispatch warning for status update on ${order._id}:`, err.message);
+      });
+    }
     return res.json(updatedOrder);
   } catch (error) {
     console.error('[Order] Error updating order status:', error.message);

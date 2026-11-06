@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const generateToken = require('../utils/generateToken');
+const { enqueueOutboxEvent } = require('../utils/outboxProcessor');
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -91,6 +92,20 @@ const registerUser = async (req, res) => {
 
     if (user) {
       const token = generateToken(user._id);
+
+      // Enqueue welcome notification in transactional outbox
+      enqueueOutboxEvent(
+        'WELCOME_EMAIL',
+        user.email,
+        {
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+        },
+        user._id
+      ).catch((err) => {
+        console.warn(`[User] Welcome notification enqueue warning for ${user.email}:`, err.message);
+      });
 
       res.cookie('jwt', token, {
         httpOnly: true,

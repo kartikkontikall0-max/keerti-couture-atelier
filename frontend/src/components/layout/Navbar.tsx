@@ -70,7 +70,7 @@ export function Navbar() {
         {/* Subtle Gold Accent Bar */}
         <div className="h-[2px] w-full bg-gradient-to-r from-transparent via-gold/40 to-transparent" />
 
-        <div className="max-w-[1600px] mx-auto px-3 sm:px-6 lg:px-12">
+        <div className="max-w-[1600px] mx-auto px-3 sm:px-6 lg:px-6 xl:px-12">
           <div className="flex items-center justify-between h-16 sm:h-20">
             {/* Mobile Menu Button */}
             <div className="flex items-center lg:hidden">
@@ -116,14 +116,14 @@ export function Navbar() {
             </div>
 
             {/* Desktop Navigation Links */}
-            <nav className="hidden lg:flex items-center space-x-8">
+            <nav className="hidden lg:flex items-center space-x-3 xl:space-x-8">
               {navLinks.map((link) => {
                 const isActive = pathname === link.href || (pathname.startsWith(link.href) && link.href !== '/');
                 return (
                   <Link
                     key={link.name}
                     href={link.href}
-                    className={`text-xs uppercase tracking-[0.18em] font-medium transition-colors relative py-1 group ${
+                    className={`text-[11px] xl:text-xs uppercase tracking-[0.12em] xl:tracking-[0.18em] font-medium transition-colors relative py-1 group ${
                       isActive ? 'text-primary font-semibold' : 'text-foreground/80 hover:text-primary'
                     }`}
                   >
