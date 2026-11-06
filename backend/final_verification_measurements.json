@@ -1,0 +1,224 @@
+[
+  {
+    "clientWidth": 360,
+    "scrollWidth": 360,
+    "bodyScrollWidth": 360,
+    "hasPageHorizontalOverflow": false,
+    "overflowDelta": 0,
+    "totalOffenders": 5,
+    "offenders": [
+      {
+        "tag": "BUTTON",
+        "className": "px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm uppercase tracking-w",
+        "right": 412,
+        "width": 110,
+        "text": "SILK BLOUSE"
+      },
+      {
+        "tag": "BUTTON",
+        "className": "px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm uppercase tracking-w",
+        "right": 537,
+        "width": 117,
+        "text": "TRADITIONAL"
+      },
+      {
+        "tag": "BUTTON",
+        "className": "px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm uppercase tracking-w",
+        "right": 657,
+        "width": 112,
+        "text": "PARTY WEAR"
+      },
+      {
+        "tag": "BUTTON",
+        "className": "px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm uppercase tracking-w",
+        "right": 754,
+        "width": 89,
+        "text": "MODERN"
+      },
+      {
+        "tag": "BUTTON",
+        "className": "px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm uppercase tracking-w",
+        "right": 884,
+        "width": 122,
+        "text": "EMBROIDERED"
+      }
+    ]
+  },
+  {
+    "clientWidth": 375,
+    "scrollWidth": 375,
+    "bodyScrollWidth": 375,
+    "hasPageHorizontalOverflow": false,
+    "overflowDelta": 0,
+    "totalOffenders": 5,
+    "offenders": [
+      {
+        "tag": "BUTTON",
+        "className": "px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm uppercase tracking-w",
+        "right": 412,
+        "width": 110,
+        "text": "SILK BLOUSE"
+      },
+      {
+        "tag": "BUTTON",
+        "className": "px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm uppercase tracking-w",
+        "right": 537,
+        "width": 117,
+        "text": "TRADITIONAL"
+      },
+      {
+        "tag": "BUTTON",
+        "className": "px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm uppercase tracking-w",
+        "right": 657,
+        "width": 112,
+        "text": "PARTY WEAR"
+      },
+      {
+        "tag": "BUTTON",
+        "className": "px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm uppercase tracking-w",
+        "right": 754,
+        "width": 89,
+        "text": "MODERN"
+      },
+      {
+        "tag": "BUTTON",
+        "className": "px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm uppercase tracking-w",
+        "right": 884,
+        "width": 122,
+        "text": "EMBROIDERED"
+      }
+    ]
+  },
+  {
+    "clientWidth": 390,
+    "scrollWidth": 390,
+    "bodyScrollWidth": 390,
+    "hasPageHorizontalOverflow": false,
+    "overflowDelta": 0,
+    "totalOffenders": 5,
+    "offenders": [
+      {
+        "tag": "BUTTON",
+        "className": "px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm uppercase tracking-w",
+        "right": 412,
+        "width": 110,
+        "text": "SILK BLOUSE"
+      },
+      {
+        "tag": "BUTTON",
+        "className": "px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm uppercase tracking-w",
+        "right": 537,
+        "width": 117,
+        "text": "TRADITIONAL"
+      },
+      {
+        "tag": "BUTTON",
+        "className": "px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm uppercase tracking-w",
+        "right": 657,
+        "width": 112,
+        "text": "PARTY WEAR"
+      },
+      {
+        "tag": "BUTTON",
+        "className": "px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm uppercase tracking-w",
+        "right": 754,
+        "width": 89,
+        "text": "MODERN"
+      },
+      {
+        "tag": "BUTTON",
+        "className": "px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm uppercase tracking-w",
+        "right": 884,
+        "width": 122,
+        "text": "EMBROIDERED"
+      }
+    ]
+  },
+  {
+    "clientWidth": 414,
+    "scrollWidth": 414,
+    "bodyScrollWidth": 414,
+    "hasPageHorizontalOverflow": false,
+    "overflowDelta": 0,
+    "totalOffenders": 4,
+    "offenders": [
+      {
+        "tag": "BUTTON",
+        "className": "px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm uppercase tracking-w",
+        "right": 537,
+        "width": 117,
+        "text": "TRADITIONAL"
+      },
+      {
+        "tag": "BUTTON",
+        "className": "px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm uppercase tracking-w",
+        "right": 657,
+        "width": 112,
+        "text": "PARTY WEAR"
+      },
+      {
+        "tag": "BUTTON",
+        "className": "px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm uppercase tracking-w",
+        "right": 754,
+        "width": 89,
+        "text": "MODERN"
+      },
+      {
+        "tag": "BUTTON",
+        "className": "px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm uppercase tracking-w",
+        "right": 884,
+        "width": 122,
+        "text": "EMBROIDERED"
+      }
+    ]
+  },
+  {
+    "clientWidth": 768,
+    "scrollWidth": 768,
+    "bodyScrollWidth": 768,
+    "hasPageHorizontalOverflow": false,
+    "overflowDelta": 0,
+    "totalOffenders": 3,
+    "offenders": [
+      {
+        "tag": "BUTTON",
+        "className": "px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm uppercase tracking-w",
+        "right": 786,
+        "width": 133,
+        "text": "PARTY WEAR"
+      },
+      {
+        "tag": "BUTTON",
+        "className": "px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm uppercase tracking-w",
+        "right": 902,
+        "width": 106,
+        "text": "MODERN"
+      },
+      {
+        "tag": "BUTTON",
+        "className": "px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm uppercase tracking-w",
+        "right": 1057,
+        "width": 145,
+        "text": "EMBROIDERED"
+      }
+    ]
+  },
+  {
+    "clientWidth": 1440,
+    "scrollWidth": 1440,
+    "bodyScrollWidth": 1440,
+    "hasPageHorizontalOverflow": false,
+    "overflowDelta": 0,
+    "totalOffenders": 0,
+    "offenders": []
+  },
+  {
+    "clientWidth": 1650,
+    "scrollWidth": 1650,
+    "bodyScrollWidth": 1650,
+    "hasPageHorizontalOverflow": false,
+    "overflowDelta": 0,
+    "totalOffenders": 0,
+    "offenders": []
+  }
+]

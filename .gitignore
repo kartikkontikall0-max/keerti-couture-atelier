@@ -1,0 +1,90 @@
+# ==============================================================================
+# KEERTI COUTURE — PRODUCTION & REPOSITORY .GITIGNORE
+# ==============================================================================
+
+# ── Dependencies ─────────────────────────────────────────────────────────────
+node_modules/
+*/node_modules/
+.pnp
+.pnp.js
+
+# ── Environment & Secrets (MANDATORY NEVER COMMIT) ───────────────────────────
+.env
+.env.*
+.env.local
+.env.development
+.env.production
+.env.test
+.env.demo
+**/.env
+**/.env.*
+**/.env.local
+**/.env.development
+**/.env.production
+**/.env.test
+**/.env.demo
+!**/.env.example
+*.pem
+*.key
+*.cert
+*.crt
+id_rsa*
+*.pfx
+
+# ── Next.js & Frontend Builds ────────────────────────────────────────────────
+frontend/.next/
+frontend/out/
+frontend/build/
+.next/
+out/
+build/
+dist/
+*.tsbuildinfo
+next-env.d.ts
+
+# ── Database & Backup Dumps ──────────────────────────────────────────────────
+*.dump
+*.bson
+*.jsonl
+*.seed.json
+mongo_data/
+keerti_demo_mongo_data/
+*.sqlite
+*.sqlite3
+
+# ── Logs & Debugging ─────────────────────────────────────────────────────────
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ── Testing & Coverage ───────────────────────────────────────────────────────
+coverage/
+*/coverage/
+.nyc_output/
+
+# ── OS & Editor Artifacts ───────────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# ── Antigravity / AI Agent Scratchpads & Transcripts ────────────────────────
+.agent/
+.agents/
+.gemini/
+.gsd/
+test_shot*.png
+*.tmp
+*.temp

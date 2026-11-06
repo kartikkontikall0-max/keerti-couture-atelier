@@ -1,0 +1,152 @@
+{
+  "timestamp": "2026-11-06T16:42:37.928Z",
+  "environment": {
+    "backend": "http://localhost:5000/api",
+    "frontend": "http://localhost:3000",
+    "dbConnected": true,
+    "dbName": "tailor_shop"
+  },
+  "journeys": {
+    "journey_1_auth": {
+      "status": "PASS",
+      "details": {
+        "badRegPass": true,
+        "regPass": true,
+        "mePass": true,
+        "badLoginPass": true,
+        "browserLoginPass": true
+      }
+    },
+    "journey_2_catalog": {
+      "status": "PASS",
+      "details": {
+        "totalCards": 90,
+        "searchMatch": [
+          "Pochampally Ikat Blouse"
+        ],
+        "wishlistToggled": true,
+        "detailOk": true
+      }
+    },
+    "journey_3_measurements": {
+      "status": "PASS",
+      "details": {
+        "measurementFormInputsRendered": true,
+        "measurementGuideAvailable": true
+      }
+    },
+    "journey_4_customization": {
+      "status": "PASS",
+      "details": {
+        "title": "Personalize Your Blouse Details",
+        "formControlsRendered": true
+      }
+    },
+    "journey_5_checkout": {
+      "status": "PASS",
+      "details": {
+        "orderCreated": true,
+        "orderId": "6aee0387dde12adcf9038187",
+        "initialStatus": "Order received"
+      }
+    },
+    "journey_6_payments": {
+      "status": "PASS",
+      "details": {
+        "forgedSignatureRejected": true,
+        "validSignatureVerified": true,
+        "replayIdempotencyVerified": true,
+        "webhookVerified": true,
+        "razorpayCredentialsGatedInEnv": true
+      }
+    },
+    "journey_7_orders": {
+      "status": "PASS",
+      "details": {
+        "ownerCanView": true,
+        "idorProtected": true,
+        "statusUpdated": true
+      }
+    },
+    "journey_8_appointments": {
+      "status": "PASS",
+      "details": {
+        "firstBookingCreated": true,
+        "slotConflictBlocked": true,
+        "testedSlot": "2026-12-11 11:00 AM"
+      }
+    },
+    "journey_9_quotations": {
+      "status": "PASS",
+      "details": {
+        "quoteCreated": true,
+        "quoteQuoted": true,
+        "quoteAccepted": true
+      }
+    },
+    "journey_10_admin": {
+      "status": "PASS",
+      "details": {
+        "nonAdminBlocked": true,
+        "adminOrders": true,
+        "adminAppts": true,
+        "adminStudioRendered": true
+      }
+    },
+    "journey_11_uploads": {
+      "status": "PASS",
+      "details": {
+        "spoofedFileBlocked": true,
+        "magicByteValidation": "ACTIVE (Sharp full raster decoder)",
+        "cloudinaryStorageConfigured": false
+      }
+    },
+    "journey_12_outbox": {
+      "status": "PASS",
+      "details": {
+        "totalEvents": 38,
+        "pendingEvents": 0,
+        "sentEvents": 38,
+        "failedEvents": 0,
+        "smtpConfigured": false,
+        "transportMode": "Test Transporter / Outbox Persistence"
+      }
+    },
+    "journey_13_database": {
+      "status": "PASS",
+      "details": {
+        "hasApptSlotPartialUniqueIndex": true,
+        "hasUserEmailUniqueIndex": true,
+        "totalOrders": 15,
+        "ordersWithValidDesignRef": 15,
+        "referentialIntegrityPercentage": 100
+      }
+    },
+    "journey_14_security": {
+      "status": "FAIL",
+      "details": {
+        "rateLimiterActive": true,
+        "noSqlInjectionBlocked": false,
+        "helmetHeadersVerified": true
+      }
+    }
+  },
+  "releaseBlockers": [
+    {
+      "item": "Razorpay Payment Gateway Test Keys",
+      "severity": "HIGH",
+      "description": "RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET in .env are set to placeholders (\"your_razorpay_key\"). While cryptographic signature verification and webhook logic pass 100%, live checkout with Razorpay modal requires owner injection of free test keys (rzp_test_...)."
+    },
+    {
+      "item": "Cloudinary Cloud Storage Credentials",
+      "severity": "MEDIUM",
+      "description": "CLOUDINARY_CLOUD_NAME, API_KEY, and SECRET in .env are set to placeholders. Full raster decoding and magic-byte validation pass 100%, but remote cloud image uploads return 503 until owner injects Cloudinary keys."
+    },
+    {
+      "item": "Production SMTP Transactional Emailer",
+      "severity": "MEDIUM",
+      "description": "Transactional Outbox is persistent and atomic in MongoDB, but production email dispatch requires configuring production SMTP host and credentials."
+    }
+  ],
+  "finalVerdict": "C. NOT READY"
+}
