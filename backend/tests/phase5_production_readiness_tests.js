@@ -608,43 +608,70 @@ async function runPhase5Tests() {
     // ─────────────────────────────────────────────────────────────────────────
     console.log('\n--- SUITE 5: Real SMTP Integration in Controlled Environment ---');
 
-    console.log('[SMTP Probe] Creating real Ethereal SMTP test account...');
+    console.log('[SMTP Probe] Preparing SMTP verification...');
+    const forceOffline = process.env.TEST_OFFLINE_SMTP === 'true';
     let etherealAccount = null;
-    let realDeliverySuccess = false;
-    let realMessageId = null;
+    let pipelineSuccess = false;
+    let remoteDeliverySuccess = false;
+    let mailMessageId = null;
+    let acceptedRecipients = [];
+    let isSimulated = false;
 
     try {
-      try {
-        etherealAccount = await nodemailer.createTestAccount();
-        console.log(`[SMTP Probe] Connected to Ethereal SMTP: ${etherealAccount.user}`);
+      if (!forceOffline) {
+        try {
+          console.log('[SMTP Probe] Probing online Ethereal SMTP test account...');
+          etherealAccount = await nodemailer.createTestAccount();
+          console.log(`[SMTP Probe] Connected to Ethereal SMTP: ${etherealAccount.user}`);
 
-        const realTransporter = nodemailer.createTransport({
-          host: etherealAccount.smtp.host,
-          port: etherealAccount.smtp.port,
-          secure: etherealAccount.smtp.secure,
-          auth: {
-            user: etherealAccount.user,
-            pass: etherealAccount.pass,
-          },
-        });
+          const realTransporter = nodemailer.createTransport({
+            host: etherealAccount.smtp.host,
+            port: etherealAccount.smtp.port,
+            secure: etherealAccount.smtp.secure,
+            auth: {
+              user: etherealAccount.user,
+              pass: etherealAccount.pass,
+            },
+          });
 
-        // Inject real transporter into mailer utility
-        setTransporter(realTransporter);
-      } catch (netErr) {
-        console.warn(`[SMTP Probe] Network probe unavailable (${netErr.message}). Utilizing deterministic SMTP transport.`);
+          // Wrap transporter to capture accepted recipients directly from server response
+          const instrumentedRealTransporter = {
+            sendMail: async (opts) => {
+              const res = await realTransporter.sendMail(opts);
+              if (res && Array.isArray(res.accepted)) {
+                acceptedRecipients = res.accepted;
+              }
+              return res;
+            },
+            verify: () => realTransporter.verify(),
+          };
+
+          // Inject real transporter into mailer utility
+          setTransporter(instrumentedRealTransporter);
+        } catch (netErr) {
+          console.warn(`[SMTP Probe] Network probe unavailable (${netErr.message}). Falling back to deterministic offline transport.`);
+        }
+      } else {
+        console.log('[SMTP Probe] TEST_OFFLINE_SMTP=true configured: activating deterministic offline transport directly.');
+      }
+
+      if (!etherealAccount) {
         const deterministicTransporter = {
-          sendMail: async (options) => ({
-            messageId: `<deterministic-${Date.now()}@keerticouture.com>`,
-            accepted: [options.to],
-            rejected: [],
-            simulated: false,
-          }),
+          sendMail: async (options) => {
+            acceptedRecipients = [options.to];
+            return {
+              messageId: `<deterministic-${Date.now()}@keerticouture.com>`,
+              accepted: [options.to],
+              rejected: [],
+              simulated: true,
+            };
+          },
           verify: async () => true,
         };
         setTransporter(deterministicTransporter);
       }
 
-      // Dispatch real transactional order confirmation email
+      // Dispatch transactional order confirmation email
       const realOrder = {
         _id: new mongoose.Types.ObjectId(),
         totalPrice: 16500,
@@ -654,13 +681,20 @@ async function runPhase5Tests() {
       };
 
       const mailResult = await sendOrderConfirmationEmail(realOrder);
-      if (mailResult && mailResult.success && !mailResult.simulated) {
-        realDeliverySuccess = true;
-        realMessageId = mailResult.messageId;
-        console.log(`[SMTP Probe] Real SMTP delivery messageId: ${realMessageId}`);
+      if (mailResult && mailResult.success) {
+        pipelineSuccess = true;
+        mailMessageId = mailResult.messageId;
+        isSimulated = Boolean(mailResult.simulated);
+        if (!isSimulated && etherealAccount) {
+          remoteDeliverySuccess = true;
+          console.log(`[SMTP Probe] Real remote SMTP delivery confirmed: ${mailMessageId}`);
+        } else {
+          remoteDeliverySuccess = false;
+          console.log(`[SMTP Probe] Deterministic offline SMTP pipeline confirmed: ${mailMessageId} (simulated=true)`);
+        }
       }
     } catch (smtpErr) {
-      console.error('[SMTP Probe] Error during real SMTP delivery:', smtpErr.message);
+      console.error('[SMTP Probe] Error during SMTP test execution:', smtpErr.message);
     } finally {
       // Cleanly reset mailer transporter to default
       resetTransporter();
@@ -669,23 +703,62 @@ async function runPhase5Tests() {
     const isOnlineEthereal = Boolean(etherealAccount);
     if (isOnlineEthereal) {
       assert(
-        realDeliverySuccess === true,
-        '[EMAIL-ONLINE] Real SMTP delivery executed via remote Ethereal test account'
+        pipelineSuccess === true && remoteDeliverySuccess === true,
+        '[EMAIL-ONLINE] Real remote SMTP delivery executed and confirmed via Ethereal'
       );
       assert(
-        Boolean(realMessageId),
-        `[EMAIL-ONLINE] Remote SMTP message ID received from mail server (${realMessageId})`
+        Boolean(mailMessageId),
+        `[EMAIL-ONLINE] Remote SMTP message ID received from mail server (${mailMessageId})`
+      );
+      assert(
+        acceptedRecipients.includes('radhika@example.com'),
+        `[EMAIL-ONLINE] Server confirmed accepted recipient (radhika@example.com)`
       );
     } else {
       assert(
-        realDeliverySuccess === true,
-        '[EMAIL-OFFLINE] Deterministic offline SMTP delivery pipeline verified without remote network dependency'
+        pipelineSuccess === true && isSimulated === true && remoteDeliverySuccess === false,
+        '[EMAIL-OFFLINE] Deterministic offline SMTP delivery pipeline verified (simulated=true, zero network egress)'
       );
       assert(
-        Boolean(realMessageId),
-        `[EMAIL-OFFLINE] Deterministic message ID generated (${realMessageId})`
+        Boolean(mailMessageId),
+        `[EMAIL-OFFLINE] Deterministic message ID generated (${mailMessageId})`
+      );
+      assert(
+        acceptedRecipients.includes('radhika@example.com'),
+        `[EMAIL-OFFLINE] Deterministic accepted recipient tracked (radhika@example.com)`
       );
     }
+
+    // Verify SMTP connection failure, retries, and graceful error capture
+    let failureHandled = false;
+    let failureAttempts = 0;
+    try {
+      const failingTransporter = {
+        sendMail: async () => {
+          failureAttempts++;
+          throw new Error('Connection refused: SMTP port 587 unreachable');
+        },
+        verify: async () => false,
+      };
+      setTransporter(failingTransporter);
+      const realOrderForFail = {
+        _id: new mongoose.Types.ObjectId(),
+        totalPrice: 16500,
+        shippingAddress: { fullName: 'Radhika Merchant', city: 'Mumbai' },
+        orderItems: [{ name: 'Royal Brocade Bespoke Blouse', price: 16500, quantity: 1 }],
+        user: { name: 'Radhika Merchant', email: 'fail_test@example.com' },
+      };
+      const failResult = await sendOrderConfirmationEmail(realOrderForFail);
+      if (failResult && failResult.success === false && failResult.error && failResult.error.includes('Connection refused')) {
+        failureHandled = true;
+      }
+    } finally {
+      resetTransporter();
+    }
+    assert(
+      failureHandled && failureAttempts === 3,
+      'SMTP connection failure triggers 3 attempts (initial + 2 retries) with safe error capture'
+    );
 
     // ─────────────────────────────────────────────────────────────────────────
     // SUITE 6: Production Database Safety & Health Checks
@@ -699,19 +772,40 @@ async function runPhase5Tests() {
 
     // Production memory DB guard
     let caughtProdErr = false;
+    let prodErrMsg = '';
+    const origEnv = process.env.NODE_ENV;
+    const origUri = process.env.MONGO_URI;
+    const origUseMemory = process.env.USE_MEMORY_DB;
+
     try {
-      const origEnv = process.env.NODE_ENV;
+      // Disconnect active connection so connectDB evaluates guards from a clean slate
+      await mongoose.disconnect();
       process.env.NODE_ENV = 'production';
       process.env.MONGO_URI = 'mongodb://memory:27017/prod_fail';
+      delete process.env.USE_MEMORY_DB;
       await connectDB();
-      process.env.NODE_ENV = origEnv;
     } catch (e) {
       caughtProdErr = true;
-      process.env.NODE_ENV = 'test';
+      prodErrMsg = e.message;
+    } finally {
+      // Unconditionally restore environment state
+      process.env.NODE_ENV = origEnv;
+      if (origUri !== undefined) {
+        process.env.MONGO_URI = origUri;
+      } else {
+        delete process.env.MONGO_URI;
+      }
+      if (origUseMemory !== undefined) {
+        process.env.USE_MEMORY_DB = origUseMemory;
+      } else {
+        delete process.env.USE_MEMORY_DB;
+      }
+      // Reconnect test database cleanly so subsequent teardown succeeds
+      await connectDB();
     }
     assert(
-      caughtProdErr,
-      'Production configuration strictly forbids in-memory MongoDB fallback'
+      caughtProdErr && prodErrMsg.includes('Production environment cannot use an in-memory database'),
+      'Production configuration strictly forbids in-memory MongoDB fallback with exact error guard'
     );
 
     // ─────────────────────────────────────────────────────────────────────────
