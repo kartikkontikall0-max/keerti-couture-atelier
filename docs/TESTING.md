@@ -65,3 +65,4 @@ node scripts/capture_portfolio_evidence.js
 | **1650px** | Ultrawide / High-Res Monitor | 1650px | 1650px | **0px** | **PASS** |
 
 Visual evidence screenshots are saved to [`docs/evidence/`](file:///c:/Users/karti/OneDrive/Documents/antigravity/tailor1/docs/evidence/).
+

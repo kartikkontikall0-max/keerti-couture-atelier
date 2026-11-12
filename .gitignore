@@ -30,6 +30,11 @@ node_modules/
 *.crt
 id_rsa*
 *.pfx
+*credential*.json
+*secret*.json
+*serviceaccount*.json
+*.kdbx
+*.sql
 
 # ── Next.js & Frontend Builds ────────────────────────────────────────────────
 frontend/.next/

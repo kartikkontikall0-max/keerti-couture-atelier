@@ -1,0 +1,27 @@
+# ==============================================================================
+# KEERTI COUTURE BACKEND .GITIGNORE
+# ==============================================================================
+
+# Dependencies
+node_modules/
+
+# Environment Variables & Secrets (NEVER COMMIT)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.cert
+*.crt
+*.pfx
+*.dump
+*.bson
+
+# Logs & Runtime
+logs/
+*.log
+npm-debug.log*
+
+# Test Coverage
+coverage/
+.nyc_output/

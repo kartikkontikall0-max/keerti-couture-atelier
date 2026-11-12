@@ -136,3 +136,4 @@ captureAndAudit().catch(err => {
   console.error('Fatal visual capture error:', err);
   process.exit(1);
 });
+

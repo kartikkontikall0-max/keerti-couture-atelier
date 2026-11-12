@@ -110,3 +110,4 @@ curl -s http://localhost:5000/ready | jq .
 # 3. Test CSRF issuance
 curl -s -c cookies.txt http://localhost:5000/api/csrf-token | jq .
 ```
+

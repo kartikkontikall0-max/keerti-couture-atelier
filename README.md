@@ -222,3 +222,4 @@ The demo database includes pre-configured accounts for testing:
 
 Developed with passion by **Kartik Kontikal** ([@kartikkontikall0-max](https://github.com/kartikkontikall0-max)).  
 Licensed under the [MIT License](LICENSE).
+

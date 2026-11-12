@@ -48,3 +48,4 @@ This guide details all environment variables supported by **Keerti Couture** acr
 When the backend boots, `validateEnv()` runs before server listener binding:
 - In `production`: Missing `JWT_SECRET`, `JWT_REFRESH_SECRET`, `COOKIE_SECRET`, or `MONGO_URI` triggers an immediate fatal error (`process.exit(1)`).
 - In all environments: Optional services (Cloudinary, SMTP, Razorpay) are inspected and logged with clean informational notices, preventing silent run-time exceptions.
+

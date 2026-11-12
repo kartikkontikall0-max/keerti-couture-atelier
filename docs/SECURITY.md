@@ -74,3 +74,4 @@ Both frontend and backend dependencies undergo regular audits:
 To report a vulnerability or security concern:
 - Email: `security@keerticouture.com` (or submit a private GitHub Advisory).
 - Do not publicly disclose vulnerabilities before a patch has been released.
+

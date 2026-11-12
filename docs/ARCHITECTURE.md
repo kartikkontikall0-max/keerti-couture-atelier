@@ -128,3 +128,4 @@ Product visuals, fabric textures, and embroidery patterns require high fidelity 
 2. **Strict Cookie Session Security**: `httpOnly`, `sameSite: lax`/`strict`, `secure` (in production).
 3. **Double Submit CSRF Protection**: Cryptographic tokens for mutation endpoints (`POST`, `PUT`, `DELETE`).
 4. **Defense in Depth**: Helmet headers, express-mongo-sanitize, strict CORS origin white-listing, and tiered IP rate limiting.
+
