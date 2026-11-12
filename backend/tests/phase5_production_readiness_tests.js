@@ -666,14 +666,26 @@ async function runPhase5Tests() {
       resetTransporter();
     }
 
-    assert(
-      realDeliverySuccess === true,
-      '[EMAIL-REAL] Real SMTP delivery executed and confirmed over network via Ethereal test account'
-    );
-    assert(
-      Boolean(realMessageId),
-      `[EMAIL-REAL] Valid SMTP message ID received from remote mail server (${realMessageId})`
-    );
+    const isOnlineEthereal = Boolean(etherealAccount);
+    if (isOnlineEthereal) {
+      assert(
+        realDeliverySuccess === true,
+        '[EMAIL-ONLINE] Real SMTP delivery executed via remote Ethereal test account'
+      );
+      assert(
+        Boolean(realMessageId),
+        `[EMAIL-ONLINE] Remote SMTP message ID received from mail server (${realMessageId})`
+      );
+    } else {
+      assert(
+        realDeliverySuccess === true,
+        '[EMAIL-OFFLINE] Deterministic offline SMTP delivery pipeline verified without remote network dependency'
+      );
+      assert(
+        Boolean(realMessageId),
+        `[EMAIL-OFFLINE] Deterministic message ID generated (${realMessageId})`
+      );
+    }
 
     // ─────────────────────────────────────────────────────────────────────────
     // SUITE 6: Production Database Safety & Health Checks
