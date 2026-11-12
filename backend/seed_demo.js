@@ -24,18 +24,19 @@ require('dotenv').config({ path: '.env.demo' });
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
-// Guard: refuse to seed if the URI looks like a production database
+const { validateDemoSeedConfig } = require('./config/validateDemoSeed');
+
+// Robust Guard: Validate database URI, host, database name, and environment
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/keerti_couture_demo';
-if (
-  !MONGO_URI.includes('demo') &&
-  !MONGO_URI.includes('localhost') &&
-  !MONGO_URI.includes('127.0.0.1')
-) {
-  console.error(
-    '\n❌ SAFETY GUARD: MONGO_URI does not contain "demo", "localhost", or "127.0.0.1".\n' +
-    '   Refusing to seed a potentially production database.\n' +
-    '   Set MONGO_URI in .env.demo to a local or demo MongoDB URI.\n'
-  );
+const guard = validateDemoSeedConfig({
+  nodeEnv: process.env.NODE_ENV,
+  mongoUri: MONGO_URI,
+  allowDemoSeed: process.env.ALLOW_DEMO_SEED === 'true' || process.env.DEMO_MODE === 'true'
+});
+
+if (!guard.safe) {
+  console.error('\n❌ SAFETY GUARD FAILURE: Refusing to seed database.');
+  console.error(`   ${guard.reason}\n`);
   process.exit(1);
 }
 

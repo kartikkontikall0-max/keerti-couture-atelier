@@ -216,7 +216,7 @@ const handleUpload = async (req, res) => {
       });
     }
   } catch (error) {
-    console.error('[Upload] Error processing image upload:', error);
+    console.error('[Upload] Error processing image upload:', error.message);
     res.status(500).json({ success: false, message: error.message || 'Image upload failed' });
   }
 };
