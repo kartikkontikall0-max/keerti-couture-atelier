@@ -14,7 +14,8 @@
     "test:sec01": "node tests/sec01_remediation_test.js",
     "test:cloudinary": "node tests/cloudinary_infrastructure_test.js",
     "test:smtp": "node tests/smtp_infrastructure_test.js",
-    "test:all": "node tests/phase2_security_tests.js && node tests/phase4_workflow_tests.js && node tests/phase5_production_readiness_tests.js && node tests/staging_readiness_test.js && node tests/sec01_remediation_test.js && node tests/cloudinary_infrastructure_test.js && node tests/smtp_infrastructure_test.js",
+    "test:seed-guard": "node tests/demo_seed_hardening_test.js",
+    "test:all": "node tests/phase2_security_tests.js && node tests/phase4_workflow_tests.js && node tests/phase5_production_readiness_tests.js && node tests/staging_readiness_test.js && node tests/sec01_remediation_test.js && node tests/cloudinary_infrastructure_test.js && node tests/smtp_infrastructure_test.js && node tests/demo_seed_hardening_test.js",
     "seed:demo": "node seed_demo.js"
   },
   "keywords": [],
@@ -26,7 +27,7 @@
     "cloudinary": "^2.9.0",
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",
-    "express": "^4.22.2",
+    "express": "^4.22.3",
     "express-mongo-sanitize": "^2.2.0",
     "express-rate-limit": "^8.3.1",
     "helmet": "^8.1.0",
